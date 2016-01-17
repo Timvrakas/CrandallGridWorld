@@ -1,60 +1,57 @@
-package CrandallGridWorld;
+package ourTeam;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import info.gridworld.actor.Actor;
 import info.gridworld.actor.Critter;
 import info.gridworld.grid.Location;
 
-//Version 1.1.0
+//Version 1.11
 //@Author Suchir/Billy/Tim, and everyone who helped figure this out on the whiteboard
 //Any edits/improvements are appreciated
-//Not sure if we need final for the methods, but it seemed useful.
-
+//Not sure if we need final for the methods, but it seemed useful
 public abstract class TeamBug extends Critter {
 	private int team;
-	private boolean isSterile;
 	private int turnsToDeath;
+	private int turnsToUnfreeze;
+	private boolean isSterile;
 	private boolean isInfected;
 	private boolean canKill;
-	private int turnsToUnfreeze;
 
 	public static final int GEEK = 1;
 	public static final int NERD = 2;
 
-	// Remember, your constuctors need to have a class-type Integer,Boolean
-	// Constuctor
+	public TeamBug() {
+		super();
+		team = GEEK;
+		turnsToDeath = -1;
+		isSterile = true;
+		isInfected = false;
+	}
 
 	public TeamBug(int teamNum, boolean hasBred) {
 		super();
 		team = teamNum;
-		isSterile = hasBred;
 		turnsToDeath = -1;
+		isSterile = hasBred;
+		isInfected = false;
 	}
 
-	public abstract TeamBug makeNewBug(Integer teamNum, Boolean hasBred);
-
-	// How your bug interacts with other bugs
-	// Called once for each bug in the area around you
-	public abstract void interact(TeamBug bug);
-
-	// Determines whether your bug (this) can kill the other bug (bugToKill)
-	public abstract boolean canKill(TeamBug bugToKill);
-
-	// Used in breeding, just make a new bug of the same type as yours in an
-	// adjacent square
-	public final void cloneSelf() {
-		TeamBug child;
-		ArrayList<Location> validLoc = getGrid().getEmptyAdjacentLocations(getLocation());
-		if (validLoc.size() > 0) {
-			Location newLoc = validLoc.get((int) (Math.random() * validLoc.size()));
-			child = makeNewBug(team, true);
-			child.putSelfInGrid(getGrid(), newLoc);
-		}
+	public int getTeam() {
+		return team;
 	}
 
 	public int getTurnsToDeath() {
 		return turnsToDeath;
+	}
+
+	public int getTurnsToUnfreeze() {
+		return turnsToUnfreeze;
+	}
+
+	public boolean isSterile() {
+		return isSterile;
 	}
 
 	public boolean isInfected() {
@@ -65,10 +62,6 @@ public abstract class TeamBug extends Critter {
 		return canKill;
 	}
 
-	public int getTurnsToUnfreeze() {
-		return turnsToUnfreeze;
-	}
-
 	// Determines if the two bugs are on the same team
 	public boolean sameTeam(TeamBug bug) {
 		return team == bug.team;
@@ -76,31 +69,37 @@ public abstract class TeamBug extends Critter {
 
 	// Your bug (this) kills the other bug (bugToBeKilled) if it can
 	public final void kill(TeamBug bugToBeKilled) {
-		if (canKill(bugToBeKilled) && bugToBeKilled.canBeKilled(this)) {
+		if (canKill(bugToBeKilled)) {
 			bugToBeKilled.removeSelfFromGrid();
+			turnsToDeath = 0;
 		}
 	}
 
-	public final boolean isDead() {
-		return (turnsToDeath == 0);
+	public final void resurrect(TeamBug bugToResurrect) {
+		bugToResurrect.turnsToDeath = -1;
 	}
 
-	public abstract boolean canBeKilled(TeamBug byWhom);
-
-	// Heals the implicit TeamBug
-	public final void heal() {
-		turnsToDeath = -1;
+	// Heals the parameter TeamBug
+	public final void heal(TeamBug bug) {
+		bug.turnsToDeath = -1;
+		isInfected = false;
 	}
 
-	// The bug is infected and countdown to death begins
-	public final void infect(int i) {
-		isInfected = true;
-		turnsToDeath = i;
+	// Your bug infects the other bug so that it has i turns left before it dies
+	public final void infect(TeamBug bug, int i) {
+		bug.isInfected = true;
+		bug.turnsToDeath = i;
 	}
 
-	// Your bug cannot move for i turns
-	public final void freeze(int i) {
-		turnsToUnfreeze = i;
+	// Your bug freezes the other bug so that it has i turns left before it can
+	// move
+	public final void freeze(TeamBug bug, int i) {
+		bug.turnsToUnfreeze = i;
+	}
+
+	public void act() {
+		super.act();
+		breed();
 	}
 
 	// Breeds your bug, to be run during every act method
@@ -108,9 +107,9 @@ public abstract class TeamBug extends Critter {
 		if (isSterile)
 			return;
 		int random = (int) (Math.random() * 10);
-		if (random == 3) {
-			cloneSelf();
+		if (random == 1) {
 			isSterile = true;
+			cloneSelf();
 		}
 	}
 
@@ -122,8 +121,10 @@ public abstract class TeamBug extends Critter {
 	}
 
 	public final void makeMove(Location loc) {
-		turnsToUnfreeze--;
-		turnsToDeath--;
+		if (turnsToUnfreeze >= 0)
+			turnsToUnfreeze--;
+		if (turnsToDeath > 0)
+			turnsToDeath--;
 		if (turnsToDeath == 0) {
 			removeSelfFromGrid();
 			return;
@@ -137,17 +138,25 @@ public abstract class TeamBug extends Critter {
 		moveTo(loc);
 	}
 
-	public void act() {
-		super.act();
-		breed();
-	}
-
-	public int getTeam() {
-		return team;
-	}
-
 	public String toString() {
-		return super.toString() + ", team=" + team + ", isInfected=" + isInfected + ", turnsToDeath=" + turnsToDeath
-				+ ", turnsToUnfreeze=" + turnsToUnfreeze + ", isSterile=" + isSterile;
+		return super.toString() + ", Team: " + team + ", isInfected: "
+				+ isInfected + ", Turns to Death: " + turnsToDeath
+				+ ", Turns to Unfreeze: " + turnsToUnfreeze;
 	}
+
+	// How your bug interacts with other bugs
+	public abstract void interact(TeamBug bug);
+
+	// Determines whether your bug (this) can kill the other bug (bugToKill)
+	public abstract boolean canKill(TeamBug bugToKill);
+
+	// Used in breeding, just make a new bug of the same type as yours in an
+	// adjacent square
+	/*
+	 * Base code if (getGrid() != null) { ArrayList<Location> locs =
+	 * getGrid().getEmptyAdjacentLocations( getLocation()); (new <INSERT YOUR
+	 * CLASS>(getTeam(), true)).putSelfInGrid(getGrid(), locs.get((int)
+	 * Math.random() * locs.size()));
+	 */
+	public abstract void cloneSelf();
 }
