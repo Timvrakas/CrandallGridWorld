@@ -13,11 +13,11 @@ import info.gridworld.grid.Location;
 
 public abstract class TeamBug extends Critter {
 	private int team;
-	private boolean isSterile;
+	private int turnsToUnfreeze;
 	private int turnsToDeath;
+	private boolean isSterile;
 	private boolean isInfected;
 	private boolean canKill;
-	private int turnsToUnfreeze;
 
 	public static final int GEEK = 1;
 	public static final int NERD = 2;
