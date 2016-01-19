@@ -80,6 +80,7 @@ public abstract class TeamBug extends Critter {
 	public final void kill(TeamBug bugToBeKilled) {
 		if (canKill(bugToBeKilled) && bugToBeKilled.canBeKilled(this)) {
 			bugToBeKilled.removeSelfFromGrid();
+			bugToBeKilled.turnsToDeath = 0;
 		}
 	}
 
