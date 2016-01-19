@@ -43,7 +43,7 @@ public abstract class TeamBug extends Critter {
 
 	// Used in breeding, just make a new bug of the same type as yours in an
 	// adjacent square
-	public final void cloneSelf() {
+	public void cloneSelf() {
 		TeamBug child;
 		ArrayList<Location> validLoc = getGrid().getEmptyAdjacentLocations(getLocation());
 		if (validLoc.size() > 0) {
