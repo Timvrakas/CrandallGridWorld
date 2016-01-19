@@ -68,7 +68,9 @@ public abstract class TeamBug extends Critter {
 	public int getTurnsToUnfreeze() {
 		return turnsToUnfreeze;
 	}
-
+	public void setSterile(){
+		isSterile = true;
+	}
 	// Determines if the two bugs are on the same team
 	public boolean sameTeam(TeamBug bug) {
 		return team == bug.team;
