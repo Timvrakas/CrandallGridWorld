@@ -18,6 +18,8 @@ public abstract class TeamBug extends Critter {
 	private boolean isSterile;
 	private boolean isInfected;
 	private boolean canKill;
+	
+	public TeamBug child;
 
 	public static final int GEEK = 1;
 	public static final int NERD = 2;
@@ -50,6 +52,7 @@ public abstract class TeamBug extends Critter {
 			Location newLoc = validLoc.get((int) (Math.random() * validLoc.size()));
 			child = makeNewBug(team, true);
 			child.putSelfInGrid(getGrid(), newLoc);
+			this.child=child;
 		}
 	}
 
