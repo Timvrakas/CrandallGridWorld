@@ -7,7 +7,7 @@ import info.gridworld.actor.Critter;
 import info.gridworld.grid.Location;
 
 //Version 1.1.0
-//@Author Suchir/Billy/Tim, and everyone who helped figure this out on the whiteboard
+//@Author Suchir/Billy/Tim/Tanay, and everyone who helped figure this out on the whiteboard
 //Any edits/improvements are appreciated
 //Not sure if we need final for the methods, but it seemed useful.
 
