@@ -1,12 +1,20 @@
 package CrandallGridWorld;
 
+import CrandallGridWorld.Geek.GeekCultBug;
+import CrandallGridWorld.Geek.GeekDynamiteBug;
+import CrandallGridWorld.Geek.GeekInterventionBug;
+import CrandallGridWorld.Geek.GeekKillerBug;
+import CrandallGridWorld.Geek.GeekVirusBug;
+import CrandallGridWorld.Nerd.NerdBlinkingBug;
+import CrandallGridWorld.Nerd.NerdCultBug;
+import CrandallGridWorld.Nerd.NerdFlyingBug;
+import CrandallGridWorld.Nerd.NerdInterventionBug;
+import CrandallGridWorld.Nerd.NerdVirusBug;
 import info.gridworld.actor.Actor;
 import info.gridworld.actor.ActorWorld;
 import info.gridworld.grid.BoundedGrid;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
-
-import java.awt.Color;
 
 public class TestRunner {
 	public static void main(String[] args) {

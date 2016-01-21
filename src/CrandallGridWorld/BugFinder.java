@@ -7,7 +7,7 @@ import info.gridworld.grid.Location;
 
 public class BugFinder {
 
-	public static ArrayList<Location> getAllBugs(String bugType, Grid grid) {
+	public static ArrayList<Location> getAllBugs(String bugType, Grid<?> grid) {
 		ArrayList<Location> locs2 = new ArrayList<Location>();
 		ArrayList<Location> locs = grid.getOccupiedLocations();
 		for (Location e : locs) {
