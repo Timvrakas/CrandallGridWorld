@@ -101,8 +101,8 @@ public abstract class TeamBug extends Critter {
 	// The bug is infected and countdown to death begins
 	public final void infect(int i) {
 		isInfected = true;
-		if(turnsToDeath < 0){
-		turnsToDeath = i;
+		if (turnsToDeath < 0) {
+			turnsToDeath = i;
 		}
 	}
 
