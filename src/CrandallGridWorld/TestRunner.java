@@ -27,28 +27,28 @@ public class TestRunner {
 		//NerdCrandallBug bug11 = new NerdCrandallBug(2, false);
 
 		world.add(new Location(0, 0), bug1);
-		world.add(new Location(0, 1), bug2);
-		world.add(new Location(0, 2), bug3);
+		world.add(new Location(24, 24), bug2);
+		world.add(new Location(2, 0), bug3);
 		//world.add(new Location(0, 3), bug4);
 		//world.add(new Location(0, 4), bug5);
-		world.add(new Location(0, 5), bug6);
+		world.add(new Location(3, 0), bug6);
 		//world.add(new Location(0, 6), bug7);
 		//world.add(new Location(0, 7), bug8);
 		//world.add(new Location(0, 8), bug9);
-		world.add(new Location(0, 9), bug10);
+		world.add(new Location(4, 0), bug10);
 		//world.add(new Location(0, 10), bug11);
 	
 		
-//		GeekKillerBug test1 = new GeekKillerBug(1, false);
+		GeekKillerBug test1 = new GeekKillerBug(1, false);
 		GeekInterventionBug test2 = new GeekInterventionBug(1, false);
 		GeekDynamiteBug test3 = new GeekDynamiteBug(1, false);
 		GeekCultBug test4 = new GeekCultBug(1, false);
 		GeekVirusBug test5 = new GeekVirusBug(1, false);
-//		world.add(new Location(49, 0), test1);
-		world.add(new Location(30, 30), test2);
-//		world.add(new Location(49, 2), test3);
-//		world.add(new Location(49, 3), test4);
-//		world.add(new Location(49, 4), test5);
+		world.add(new Location(0, 49), test1);
+		world.add(new Location(1, 49), test2);
+		world.add(new Location(2, 49), test3);
+		world.add(new Location(3, 49), test4);
+		world.add(new Location(4, 49), test5);
 //		GeekKillerBug test6 = new GeekKillerBug(1, false);
 //		GeekKillerBug test7 = new GeekKillerBug(1, false);
 //		GeekKillerBug test8 = new GeekKillerBug(1, false);

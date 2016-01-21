@@ -37,7 +37,7 @@ public class GeekCultBug extends TeamBug {
 	@Override
 	public boolean canBeKilled(TeamBug byWhom) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }
