@@ -1,6 +1,7 @@
 package CrandallGridWorld.Nerd;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import CrandallGridWorld.BugFinder;
 import CrandallGridWorld.TeamBug;
@@ -10,6 +11,8 @@ import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
 public class NerdInterventionBug extends NerdTeamBug {
+
+	private TeamBug target;
 
 	public NerdInterventionBug(int tN, boolean hasBred) {
 		super(tN, hasBred);
@@ -43,28 +46,17 @@ public class NerdInterventionBug extends NerdTeamBug {
 
 	@Override
 	public void act() {
-		ArrayList<Location> locs = BugFinder.getAllBugs("GeekCultBug", getGrid());
-		if (locs.isEmpty()) {
-			System.out.println("error");
-			super.act();
-		} else {
-			setDirection(getLocation().getDirectionToward(locs.get(0)));
-
-			if (canMove())
-				move();
-			ArrayList<Location> targets = getGrid().getOccupiedAdjacentLocations(getLocation());
-
-			for (Location x : targets) {
-				TeamBug z = (TeamBug) getGrid().get(x);
-				if (z.getClass().getName().endsWith("GeekCultBug")) {
-					interact(z);
-				} else {
-					System.out.println("error");
-				}
+		aquireTarget();
+		if (canMove())
+			move();
+		ArrayList<Location> targets = getGrid().getOccupiedAdjacentLocations(getLocation());
+		for (Location x : targets) {
+			TeamBug z = (TeamBug) getGrid().get(x);
+			if (z instanceof GeekCultBug) {
+				interact(z);
 			}
-			breed();
-
 		}
+		breed();
 	}
 
 	public void move() {
@@ -78,6 +70,24 @@ public class NerdInterventionBug extends NerdTeamBug {
 		else
 			removeSelfFromGrid();
 
+	}
+
+	private void aquireTarget() {
+		if (target == null || target.isDead()) {
+			ArrayList<Location> locs = BugFinder.getAllBugs("GeekCultBug", getGrid());
+			if (locs.isEmpty()) {
+				System.out.println("No CultBugs Left");
+				target = null;
+			} else {
+				Location targetLoc = locs.get((new Random()).nextInt(locs.size()));
+				target = (TeamBug) getGrid().get(targetLoc);
+			}
+		}
+		if (target == null) {
+			setDirection(getLocation().getDirectionToward(selectMoveLocation(getMoveLocations())));
+		} else {
+			setDirection(getLocation().getDirectionToward(target.getLocation()));
+		}
 	}
 
 	public boolean canMove() {
